@@ -7,14 +7,34 @@
   <script src="https://unpkg.com/react-dom@17.0.0/umd/react-dom.development.js"></script>
   <script src="https://unpkg.com/@babel/standalone@7.12.4/babel.js"></script>
   <script type="text/babel">
-    function Message({children}) {
-      return <div className="message">{children}</div>
+    const propTypes = {
+      string(props, propName, componentName) {
+        const type = typeof props[propName]
+        if (type !== 'string') {
+          return new Error(
+            `Hey, the component ${componentName} needs the prop ${propName} to be a type of "string" but was passed a ${type}`,
+          )
+        }
+      },
+    }
+
+    function Message({subject, greeting}) {
+      return (
+        <div className="message">
+          {greeting}, {subject}
+        </div>
+      )
+    }
+
+    Message.propTypes = {
+      subject: propTypes.string,
+      greeting: propTypes.string,
     }
 
     const element = (
       <div className="container">
-        <Message>Hello World</Message>
-        <Message>Goodbye World</Message>
+        <Message greeting="Hello" subject="World"></Message>
+        <Message greeting="Goodbye" subject="World"></Message>
       </div>
     )
 
